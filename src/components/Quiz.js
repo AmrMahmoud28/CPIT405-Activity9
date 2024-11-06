@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Question from './Question';
 import Result from './Result';
 import './Quiz.css';
@@ -65,10 +65,21 @@ function Quiz() {
     const [showResult, setShowResult] = useState(false);
     const [score, setScore] = useState(0);
     const [currentQuestion, setCurrentQuestion] = useState(0);
+    const [timer, setTimer] = useState(120);
+
+    useEffect(() =>{
+        if (timer > 0 & !showResult) {
+            const timerInterval = setInterval(() => {
+                setTimer(timer - 1);
+            }, 1000);
+            return () => clearInterval(timerInterval);
+        }
+        handleSubmit()
+    }, [timer, showResult])
 
     const handleAnswerOptionClick = (questionIndex, isCorrect) => {
         (answers[questionIndex] === null & currentQuestion < questions.length) && (setCurrentQuestion(currentQuestion + 1));
-        
+
         const newAnswers = [...answers];
         newAnswers[questionIndex] = isCorrect;
         setAnswers(newAnswers);
@@ -87,6 +98,9 @@ function Quiz() {
             ) : (
                 <div>
                     <div className='progressContainer'>
+                        <div className={`timer ${timer < 30 ? 'warning' : ''}`}>
+                            Time Left: {Math.floor(timer / 60)}:{timer % 60 < 10 ? `0${timer % 60}` : timer % 60}
+                        </div>
                         <div className='progressBar' style={{width: `${((currentQuestion) / questions.length) * 100}%`}}></div>
                     </div>
                     {questions.map((question, index) => (
