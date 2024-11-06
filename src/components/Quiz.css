@@ -3,3 +3,18 @@
     flex-direction: column;
     align-items: center;
 }
+
+.progressContainer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 25px;
+    background-color: #e0e0e0;
+}
+
+.progressBar {
+    height: 100%;
+    background-color: #007BFF;
+    transition: 0.3s ease;
+}

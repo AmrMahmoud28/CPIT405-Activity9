@@ -64,8 +64,11 @@ function Quiz() {
     const [answers, setAnswers] = useState(Array(questions.length).fill(null));
     const [showResult, setShowResult] = useState(false);
     const [score, setScore] = useState(0);
+    const [currentQuestion, setCurrentQuestion] = useState(0);
 
     const handleAnswerOptionClick = (questionIndex, isCorrect) => {
+        (answers[questionIndex] === null & currentQuestion < questions.length) && (setCurrentQuestion(currentQuestion + 1));
+        
         const newAnswers = [...answers];
         newAnswers[questionIndex] = isCorrect;
         setAnswers(newAnswers);
@@ -83,6 +86,9 @@ function Quiz() {
                 <Result score={score} totalQuestions={questions.length} />
             ) : (
                 <div>
+                    <div className='progressContainer'>
+                        <div className='progressBar' style={{width: `${((currentQuestion) / questions.length) * 100}%`}}></div>
+                    </div>
                     {questions.map((question, index) => (
                         <Question
                             key={index}
